@@ -17,3 +17,5 @@ This project uses GitHub Actions to run CI checks for pull requests.
 ## Exercise 14
 
 Deployment runs only when changes are pushed to the main branch.
+ 
+ <!-- Exercise 16 skip deployment test -->
