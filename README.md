@@ -14,3 +14,6 @@ Start by running `npm install` inside the project folder
 ## Exercise 13
 
 This project uses GitHub Actions to run CI checks for pull requests.
+## Exercise 14
+
+Deployment runs only when changes are pushed to the main branch.
