@@ -42,13 +42,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Trigger deployment
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
   tag_release:
-    needs: [test, deploy]
+    needs: test
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-latest
 
@@ -62,7 +60,7 @@ jobs:
           DEFAULT_BUMP: patch
 
   notify_success:
-    needs: [deploy, tag_release]
+    needs: deploy
     if: ${{ success() && github.event_name == 'push' }}
     runs-on: ubuntu-latest
 
@@ -75,7 +73,7 @@ jobs:
 
   notify_failure:
     needs: [test, deploy, tag_release]
-    if: ${{ failure() && github.event_name == 'push' }}
+    if: ${{ always() && github.event_name == 'push' && (needs.test.result == 'failure' || needs.deploy.result == 'failure' || needs.tag_release.result == 'failure') }}
     runs-on: ubuntu-latest
 
     steps:
