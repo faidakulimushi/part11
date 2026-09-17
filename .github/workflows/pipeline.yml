@@ -36,31 +36,11 @@ jobs:
       - name: Test
         run: npm test
 
-  deploy:
-    needs: test
-    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Trigger deployment
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
-      - name: Notify Discord - Success
-        if: ${{ success() && github.event_name == 'push' }}
-        run: |
-          curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ Deployment successful! Repository: ${{ github.repository }} | Commit: ${{ github.sha }} | Branch: ${{ github.ref_name }}\"}" \
-            "${{ secrets.DISCORD_WEBHOOK }}"
-
-      - name: Notify Discord - Failure
-        if: ${{ failure() }}
-        run: |
-          curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"❌ Build failed! Repository: ${{ github.repository }} | Commit: ${{ github.sha }} | Branch: ${{ github.ref_name }}\"}" \
-            "${{ secrets.DISCORD_WEBHOOK }}"
-
   tag_release:
-    needs: test
+    needs: [simple_deployment_pipeline]
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-latest
 
@@ -72,28 +52,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-
-  notify_success:
-    needs: deploy
-    if: ${{ success() && github.event_name == 'push' }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Notify Discord - Success
-        run: |
-          curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ Deployment successful! Repository: ${{ github.repository }} | Commit: ${{ github.sha }} | Branch: ${{ github.ref_name }}\"}" \
-            "${{ secrets.DISCORD_WEBHOOK }}"
-
-  notify_failure:
-    needs: [test, deploy, tag_release]
-    if: ${{ always() && github.event_name == 'push' && (needs.test.result == 'failure' || needs.deploy.result == 'failure' || needs.tag_release.result == 'failure') }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Notify Discord - Failure
-        run: |
-          curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"❌ Build failed! Repository: ${{ github.repository }} | Commit: ${{ github.sha }} | Branch: ${{ github.ref_name }}\"}" \
-            "${{ secrets.DISCORD_WEBHOOK }}"
-```
