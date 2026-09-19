@@ -19,3 +19,7 @@ This project uses GitHub Actions to run CI checks for pull requests.
 Deployment runs only when changes are pushed to the main branch.
  
  <!-- Exercise 16 skip deployment test -->
+
+## Exercise 22
+
+The main branch is protected and requires a pull request review before merging.
