@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 jobs:
-  simple_deployment_pipeline:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,12 +35,19 @@ jobs:
       - name: Test
         run: npm test
 
+  deploy:
+    needs: test
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Trigger deployment
-        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: test
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-latest
 
@@ -52,3 +59,41 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+  notify_success:
+    needs: [deploy, tag_release]
+    if: ${{ success() && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notify Discord - Success
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          title: "Deployment successful"
+          description: |
+            A new version was successfully deployed.
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+
+  notify_failure:
+    needs: [test, deploy, tag_release]
+    if: ${{ always() && failure() && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notify Discord - Failure
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          title: "Build failed"
+          description: |
+            The build or deployment failed.
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Commit message: ${{ github.event.head_commit.message }}
+            Author: ${{ github.event.head_commit.author.name }}
