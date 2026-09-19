@@ -47,7 +47,7 @@ jobs:
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
   tag_release:
-    needs: [test, deploy]
+    needs: test
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-latest
 
