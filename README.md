@@ -21,3 +21,5 @@ Deployment runs only when changes are pushed to the main branch.
  <!-- Exercise 16 skip deployment test -->
 
  ## Exercise 17 test
+
+https://github.com/faidakulimushi/exercise21-redux-anecdotes
