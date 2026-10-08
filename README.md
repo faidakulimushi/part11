@@ -86,7 +86,7 @@ This repository contains my solutions and CI/CD implementations for the Full Sta
 ## 🌐 Repository
 
 **GitHub:**
-[bloglist-cicd](https://github.com/faidakulimushi/exercise21-redux-anecdotes)
+[exercise21-redux-anecdotes](https://github.com/faidakulimushi/exercise21-redux-anecdotes)
 
 ## 🎓 Course
 
