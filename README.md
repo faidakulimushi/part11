@@ -1,24 +1,16 @@
-# Full Stack Open – Pokedex CI/CD
+# Full Stack Open – Part 11: CI/CD
 
-This repository contains my work for the **CI/CD module of the Full Stack Open course**.
+This repository contains my work for **Part 11 of the Full Stack Open course**, focusing on **Continuous Integration and Continuous Deployment (CI/CD)**.
 
-The project focuses on building a Pokedex application and implementing **Continuous Integration and Continuous Deployment (CI/CD)** using GitHub Actions and Render.
+## Commands
 
-## 🚀 Deployed Application
-
-The application is deployed on Render:
-
-**https://fs-pokedex-0veh.onrender.com/**
-
-## 🛠️ Getting Started
-
-Install the project dependencies:
+Start by installing the project dependencies:
 
 ```bash
 npm install
 ```
 
-Start the application:
+Run the application in development mode:
 
 ```bash
 npm start
@@ -36,61 +28,74 @@ Run ESLint:
 npm run eslint
 ```
 
-Build the application:
+Create a production build:
 
 ```bash
 npm run build
 ```
 
-## 🔄 CI/CD Pipeline
+Run the production build:
 
-This project uses **GitHub Actions** to automate the development workflow.
+```bash
+npm run start-prod
+```
 
-The CI/CD pipeline is used to:
+# Full Stack Open – Part 11 Submission
 
-* Run automated tests
-* Check code quality with ESLint
-* Build the application
-* Deploy the application
-* Monitor the deployed application
-* Create releases and version tags
+## Required Links
 
-The pipeline is triggered by changes pushed to the repository and pull requests targeting the `main` branch.
+### 1. Deployed Pokedex Application
 
-## 📚 Full Stack Open Exercises
+https://fs-pokedex-0veh.onrender.com/
 
-This repository contains my solutions and CI/CD implementations for the Full Stack Open Part 11 exercises, including:
+### 2. Pokedex Application Repository
 
-* Pull request pipeline
-* CI pipeline
-* Deployment pipeline
-* Health checks
-* Workflow jobs
-* Release tagging
-* Main branch protection
-* Pull request reviews
+https://github.com/faidakulimushi/part11
 
-## 💻 Technologies
+### 3. Custom Pipeline Repository
 
-* Node.js
-* JavaScript
-* Express
-* Git
-* GitHub
+https://github.com/faidakulimushi/exercise21-redux-anecdotes
+
+### 4. Exercise 11.21 – Custom Pipeline
+
+The custom pipeline was developed in the following repository:
+
+https://github.com/faidakulimushi/exercise21-redux-anecdotes
+
+**Exercise 11.21 commit:**
+
+https://github.com/faidakulimushi/exercise21-redux-anecdotes/commit/658872c1abb73cefd2af1850629ddce93f32680d
+
+The exercise code is not linked directly to a single file because the repository went through several rounds of **debugging, testing, and CI/CD pipeline fixes** while completing the exercise. The referenced commit represents the relevant completed work.
+
+### 5. Live Custom Pipeline Application
+
+https://fullstack-own-pipeline.onrender.com/
+
+## Exercise 11.22 – Protect the Main Branch
+
+For Exercise 11.22, the `main` branch was protected and configured to require a **pull request review** before changes could be merged.
+
+The exercise included:
+
+* Protecting the `main` branch
+* Requiring pull requests
+* Requiring code review before merging
+* Preventing administrators from bypassing the review requirement
+* Creating a pull request
+* Requesting **mluukkai** to review the pull request
+
+## Summary
+
+This Part 11 submission demonstrates practical experience with:
+
+* Git and GitHub
 * GitHub Actions
-* CI/CD
-* Render
-* ESLint
-* Automated Testing
-
-## 🌐 Repository
-
-**GitHub:**
-[exercise21-redux-anecdotes](https://github.com/faidakulimushi/exercise21-redux-anecdotes)
-
-## 🎓 Course
-
-This project is part of the **Full Stack Open** course by the **University of Helsinki**.
-
-**Course:** Full Stack Open
-**Part:** 11 – CI/CD
+* Continuous Integration
+* Continuous Deployment
+* Automated testing and linting
+* Production builds
+* Render deployment
+* Pull requests
+* Branch protection
+* Code review workflows
